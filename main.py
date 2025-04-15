@@ -6,18 +6,14 @@ import pandas as pd
 connectDB = dbutil.connect_to_mysql()
 cursor = connectDB.cursor()
 
-## Read staging table
-# stgPokemonData = []
-sql = "SELECT * FROM stgPokemon"
-# cursor.execute(sql)
-# columns = cursor.description 
-# for value in cursor.fetchall(): 
-#     tmp = {}
-#     for (index, column) in enumerate(value): 
-#         tmp[columns[index][0]] = column
-#     stgPokemonData.append(tmp)
-# print(stgPokemonData)
+## Select data from staging table
+try:
+    with connectDB.cursor() as cur:
+        cur.execute('SELECT * FROM stgPokemon')
+        rows = cur.fetchall()
+        for row in rows:
+            print(row)
 
-stgPokemonData = pd.read_sql_query(sql, connectDB)
-print(stgPokemonData)
+finally:
+    connectDB.close()
 
